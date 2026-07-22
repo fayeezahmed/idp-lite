@@ -1,0 +1,95 @@
+# IDP Lite Demo App
+
+A minimal Node.js API for the IDP-lite project.
+
+This is intentionally small. Its job is to act as the workload that later IDP phases will containerise, deploy to Kubernetes, connect to CI, and eventually manage through GitOps.
+
+## Requirements
+
+- Node.js 20 or later
+- npm
+
+## Endpoints
+
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| GET | `/health` | Liveness-style health check |
+| GET | `/ready` | Readiness-style check |
+| GET | `/api/hello` | Example application endpoint |
+
+## Install
+
+No third-party dependencies are required.
+
+```bash
+npm install
+```
+
+## Run locally
+
+```bash
+npm start
+```
+
+The app starts on port `3000` by default.
+
+To use a different port:
+
+```bash
+PORT=4000 npm start
+```
+
+## Test the endpoints
+
+In another terminal:
+
+```bash
+curl http://localhost:3000/health
+curl http://localhost:3000/ready
+curl http://localhost:3000/api/hello
+```
+
+Expected responses:
+
+```json
+{"status":"ok","service":"idp-lite-demo-app"}
+```
+
+```json
+{"status":"ready","service":"idp-lite-demo-app"}
+```
+
+```json
+{"message":"Hello from IDP Lite demo app"}
+```
+
+## Run tests
+
+```bash
+npm test
+```
+
+The tests use Node's built-in test runner and do not need Jest, Supertest, or Express.
+
+## Project structure
+
+```text
+idp-lite-demo-app/
+├── package.json
+├── README.md
+├── src/
+│   ├── app.js
+│   └── server.js
+└── test/
+    └── app.test.js
+```
+
+## Next IDP-lite phase
+
+After this app runs locally and tests pass, the next phase is containerisation:
+
+- Add a Dockerfile
+- Add a `.dockerignore`
+- Build the image locally
+- Run the app through Docker
+- Test `/health` through Docker

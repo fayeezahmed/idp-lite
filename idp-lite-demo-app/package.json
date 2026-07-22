@@ -1,0 +1,23 @@
+{
+  "name": "idp-lite-demo-app",
+  "version": "0.1.0",
+  "description": "A minimal Node.js API for the IDP-lite learning project.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "idp-lite",
+    "nodejs",
+    "api",
+    "platform-engineering"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  }
+}
