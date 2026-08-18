@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDP-Lite Build Task List</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #dfe3ea;
+      --accent: #2563eb;
+      --accent-soft: #eaf1ff;
+      --done: #6b7280;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .container {
+      width: min(960px, calc(100% - 32px));
+      margin: 40px auto;
+    }
+
+    header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    .goal-label {
+      font-weight: 700;
+      margin-top: 18px;
+      margin-bottom: 4px;
+    }
+
+    .goal {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .phase {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .phase-title {
+      margin: 0;
+      padding: 18px 22px;
+      background: var(--accent-soft);
+      color: #1746a2;
+      font-size: 1.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section {
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section:last-child { border-bottom: 0; }
+
+    .section h3 {
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .task {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 7px 0;
+    }
+
+    .task input {
+      margin-top: 4px;
+      width: 17px;
+      height: 17px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .task label {
+      cursor: pointer;
+    }
+
+    .task input:checked + label {
+      text-decoration: line-through;
+      color: var(--done);
+    }
+
+    .definition {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .definition h2 {
+      margin-top: 0;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    button {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 9px;
+      padding: 9px 13px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    button:hover {
+      background: #f3f4f6;
+    }
+
+    .progress {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media print {
+      body { background: white; }
+      .container { width: 100%; margin: 0; }
+      .phase, header, .definition { box-shadow: none; break-inside: avoid; }
+      .toolbar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>IDP-Lite Build Task List</h1>
+      <div class="goal-label">Goal</div>
+      <p class="goal">
+        Build a small Internal Developer Platform that lets a developer take a simple app
+        from source code to a running Kubernetes service using CI, containers, GitOps,
+        basic observability, and documented golden-path instructions.
+      </p>
+
+      <div class="toolbar">
+        <button type="button" onclick="resetChecklist()">Reset checklist</button>
+        <button type="button" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+      <div class="progress" id="progress"></div>
+    </header>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 1: Basic App</h2>
+      <div class="section">
+        <h3>1. Create the demo app</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t1"><label for="t1">Create a new GitHub repo: <code>idp-lite-demo-app</code></label></li>
+          <li class="task"><input type="checkbox" id="t2"><label for="t2">Create a simple Node.js API</label></li>
+          <li class="task"><input type="checkbox" id="t3"><label for="t3">Add <code>/health</code> endpoint</label></li>
+          <li class="task"><input type="checkbox" id="t4"><label for="t4">Add <code>/ready</code> endpoint</label></li>
+          <li class="task"><input type="checkbox" id="t5"><label for="t5">Add <code>/api/hello</code> endpoint</label></li>
+          <li class="task"><input type="checkbox" id="t6"><label for="t6">Add basic unit test</label></li>
+          <li class="task"><input type="checkbox" id="t7"><label for="t7">Add README with local run instructions</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>2. Run the app locally</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t8"><label for="t8">Install dependencies</label></li>
+          <li class="task"><input type="checkbox" id="t9"><label for="t9">Start the app locally</label></li>
+          <li class="task"><input type="checkbox" id="t10"><label for="t10">Test <code>/health</code></label></li>
+          <li class="task"><input type="checkbox" id="t11"><label for="t11">Test <code>/ready</code></label></li>
+          <li class="task"><input type="checkbox" id="t12"><label for="t12">Test <code>/api/hello</code></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 2: Containerisation</h2>
+      <div class="section">
+        <h3>3. Add Docker support</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t13"><label for="t13">Create Dockerfile</label></li>
+          <li class="task"><input type="checkbox" id="t14"><label for="t14">Create <code>.dockerignore</code></label></li>
+          <li class="task"><input type="checkbox" id="t15"><label for="t15">Build Docker image locally</label></li>
+          <li class="task"><input type="checkbox" id="t16"><label for="t16">Run Docker container locally</label></li>
+          <li class="task"><input type="checkbox" id="t17"><label for="t17">Test <code>/health</code> through Docker</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>4. Add simple local commands</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t18"><label for="t18">Create Makefile</label></li>
+          <li class="task"><input type="checkbox" id="t19"><label for="t19">Add <code>make install</code></label></li>
+          <li class="task"><input type="checkbox" id="t20"><label for="t20">Add <code>make test</code></label></li>
+          <li class="task"><input type="checkbox" id="t21"><label for="t21">Add <code>make build</code></label></li>
+          <li class="task"><input type="checkbox" id="t22"><label for="t22">Add <code>make run</code></label></li>
+          <li class="task"><input type="checkbox" id="t23"><label for="t23">Add <code>make docker-build</code></label></li>
+          <li class="task"><input type="checkbox" id="t24"><label for="t24">Add <code>make docker-run</code></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 3: Kubernetes</h2>
+      <div class="section">
+        <h3>5. Set up local Kubernetes</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t25"><label for="t25">Install or confirm Minikube is installed</label></li>
+          <li class="task"><input type="checkbox" id="t26"><label for="t26">Start Minikube</label></li>
+          <li class="task"><input type="checkbox" id="t27"><label for="t27">Confirm cluster is running</label></li>
+          <li class="task"><input type="checkbox" id="t28"><label for="t28">Confirm kubectl can connect to the cluster</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>6. Add Kubernetes manifests</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t29"><label for="t29">Create <code>k8s/</code> folder</label></li>
+          <li class="task"><input type="checkbox" id="t30"><label for="t30">Add <code>deployment.yaml</code></label></li>
+          <li class="task"><input type="checkbox" id="t31"><label for="t31">Add <code>service.yaml</code></label></li>
+          <li class="task"><input type="checkbox" id="t32"><label for="t32">Add liveness probe</label></li>
+          <li class="task"><input type="checkbox" id="t33"><label for="t33">Add readiness probe</label></li>
+          <li class="task"><input type="checkbox" id="t34"><label for="t34">Deploy app to Minikube</label></li>
+          <li class="task"><input type="checkbox" id="t35"><label for="t35">Confirm pod is running</label></li>
+          <li class="task"><input type="checkbox" id="t36"><label for="t36">Port-forward service</label></li>
+          <li class="task"><input type="checkbox" id="t37"><label for="t37">Test <code>/health</code> from Kubernetes</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 4: CI Pipeline</h2>
+      <div class="section">
+        <h3>7. Add GitHub Actions</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t38"><label for="t38">Create <code>.github/workflows/ci.yml</code></label></li>
+          <li class="task"><input type="checkbox" id="t39"><label for="t39">Add checkout step</label></li>
+          <li class="task"><input type="checkbox" id="t40"><label for="t40">Add dependency install step</label></li>
+          <li class="task"><input type="checkbox" id="t41"><label for="t41">Add lint step</label></li>
+          <li class="task"><input type="checkbox" id="t42"><label for="t42">Add test step</label></li>
+          <li class="task"><input type="checkbox" id="t43"><label for="t43">Add Docker build step</label></li>
+          <li class="task"><input type="checkbox" id="t44"><label for="t44">Push code and confirm pipeline passes</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>8. Add container registry</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t45"><label for="t45">Use GitHub Container Registry</label></li>
+          <li class="task"><input type="checkbox" id="t46"><label for="t46">Add image build step to CI</label></li>
+          <li class="task"><input type="checkbox" id="t47"><label for="t47">Add image push step to CI</label></li>
+          <li class="task"><input type="checkbox" id="t48"><label for="t48">Tag image with commit SHA</label></li>
+          <li class="task"><input type="checkbox" id="t49"><label for="t49">Confirm image appears in registry</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 5: GitOps</h2>
+      <div class="section">
+        <h3>9. Create platform config repo</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t50"><label for="t50">Create new GitHub repo: <code>idp-lite-platform-config</code></label></li>
+          <li class="task"><input type="checkbox" id="t51"><label for="t51">Add <code>apps/demo-app/</code> folder</label></li>
+          <li class="task"><input type="checkbox" id="t52"><label for="t52">Move Kubernetes manifests into platform config repo</label></li>
+          <li class="task"><input type="checkbox" id="t53"><label for="t53">Update image reference to use GitHub Container Registry image</label></li>
+          <li class="task"><input type="checkbox" id="t54"><label for="t54">Commit and push platform config repo</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>10. Install ArgoCD</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t55"><label for="t55">Install ArgoCD in Minikube</label></li>
+          <li class="task"><input type="checkbox" id="t56"><label for="t56">Access ArgoCD UI</label></li>
+          <li class="task"><input type="checkbox" id="t57"><label for="t57">Log in to ArgoCD</label></li>
+          <li class="task"><input type="checkbox" id="t58"><label for="t58">Create ArgoCD application manifest</label></li>
+          <li class="task"><input type="checkbox" id="t59"><label for="t59">Point ArgoCD at <code>idp-lite-platform-config</code></label></li>
+          <li class="task"><input type="checkbox" id="t60"><label for="t60">Sync the demo app</label></li>
+          <li class="task"><input type="checkbox" id="t61"><label for="t61">Confirm app is Healthy</label></li>
+          <li class="task"><input type="checkbox" id="t62"><label for="t62">Confirm app is Synced</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>11. Prove the GitOps loop</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t63"><label for="t63">Make a small app change</label></li>
+          <li class="task"><input type="checkbox" id="t64"><label for="t64">Push change to app repo</label></li>
+          <li class="task"><input type="checkbox" id="t65"><label for="t65">Confirm CI builds and pushes new image</label></li>
+          <li class="task"><input type="checkbox" id="t66"><label for="t66">Update image tag in platform config repo</label></li>
+          <li class="task"><input type="checkbox" id="t67"><label for="t67">Confirm ArgoCD deploys the new version</label></li>
+          <li class="task"><input type="checkbox" id="t68"><label for="t68">Test the deployed app</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 6: Developer Experience</h2>
+      <div class="section">
+        <h3>12. Add golden-path documentation</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t69"><label for="t69">Create <code>docs/</code> folder</label></li>
+          <li class="task"><input type="checkbox" id="t70"><label for="t70">Add <code>getting-started.md</code></label></li>
+          <li class="task"><input type="checkbox" id="t71"><label for="t71">Add <code>golden-path.md</code></label></li>
+          <li class="task"><input type="checkbox" id="t72"><label for="t72">Add <code>troubleshooting.md</code></label></li>
+          <li class="task"><input type="checkbox" id="t73"><label for="t73">Add <code>architecture.md</code></label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>13. Improve developer commands</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t74"><label for="t74">Add <code>make deploy-local</code></label></li>
+          <li class="task"><input type="checkbox" id="t75"><label for="t75">Add <code>make logs</code></label></li>
+          <li class="task"><input type="checkbox" id="t76"><label for="t76">Add <code>make status</code></label></li>
+          <li class="task"><input type="checkbox" id="t77"><label for="t77">Add <code>make port-forward</code></label></li>
+          <li class="task"><input type="checkbox" id="t78"><label for="t78">Add <code>make clean</code></label></li>
+          <li class="task"><input type="checkbox" id="t79"><label for="t79">Document all commands in README</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>14. Add architecture diagram</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t80"><label for="t80">Draw simple flow diagram</label></li>
+          <li class="task"><input type="checkbox" id="t81"><label for="t81">Show app repo</label></li>
+          <li class="task"><input type="checkbox" id="t82"><label for="t82">Show CI pipeline</label></li>
+          <li class="task"><input type="checkbox" id="t83"><label for="t83">Show container registry</label></li>
+          <li class="task"><input type="checkbox" id="t84"><label for="t84">Show platform config repo</label></li>
+          <li class="task"><input type="checkbox" id="t85"><label for="t85">Show ArgoCD</label></li>
+          <li class="task"><input type="checkbox" id="t86"><label for="t86">Show Kubernetes cluster</label></li>
+          <li class="task"><input type="checkbox" id="t87"><label for="t87">Add diagram to <code>architecture.md</code></label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 7: Observability</h2>
+      <div class="section">
+        <h3>15. Add basic app-level observability</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t88"><label for="t88">Add structured logging</label></li>
+          <li class="task"><input type="checkbox" id="t89"><label for="t89">Confirm logs are visible with <code>kubectl logs</code></label></li>
+          <li class="task"><input type="checkbox" id="t90"><label for="t90">Add <code>/metrics</code> endpoint if using Prometheus-compatible metrics</label></li>
+          <li class="task"><input type="checkbox" id="t91"><label for="t91">Document how to view app logs</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>16. Add cluster-level observability</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t92"><label for="t92">Install Prometheus</label></li>
+          <li class="task"><input type="checkbox" id="t93"><label for="t93">Install Grafana</label></li>
+          <li class="task"><input type="checkbox" id="t94"><label for="t94">Confirm app metrics are being scraped</label></li>
+          <li class="task"><input type="checkbox" id="t95"><label for="t95">Create or import a simple dashboard</label></li>
+          <li class="task"><input type="checkbox" id="t96"><label for="t96">Document how to access Grafana</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 8: Quality and Security Gates</h2>
+      <div class="section">
+        <h3>17. Add quality checks</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t97"><label for="t97">Add linting</label></li>
+          <li class="task"><input type="checkbox" id="t98"><label for="t98">Add unit tests</label></li>
+          <li class="task"><input type="checkbox" id="t99"><label for="t99">Add API smoke test</label></li>
+          <li class="task"><input type="checkbox" id="t100"><label for="t100">Add CI step for API smoke test</label></li>
+          <li class="task"><input type="checkbox" id="t101"><label for="t101">Fail pipeline if tests fail</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>18. Add security checks</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t102"><label for="t102">Add Trivy container scan</label></li>
+          <li class="task"><input type="checkbox" id="t103"><label for="t103">Add dependency scan</label></li>
+          <li class="task"><input type="checkbox" id="t104"><label for="t104">Add Kubernetes manifest validation with kubeconform</label></li>
+          <li class="task"><input type="checkbox" id="t105"><label for="t105">Add these checks to CI</label></li>
+          <li class="task"><input type="checkbox" id="t106"><label for="t106">Document what each check does</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 9: Self-Service Feature</h2>
+      <div class="section">
+        <h3>19. Create a service template</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t107"><label for="t107">Create a template folder for new services</label></li>
+          <li class="task"><input type="checkbox" id="t108"><label for="t108">Include starter app structure</label></li>
+          <li class="task"><input type="checkbox" id="t109"><label for="t109">Include Dockerfile</label></li>
+          <li class="task"><input type="checkbox" id="t110"><label for="t110">Include Kubernetes manifests</label></li>
+          <li class="task"><input type="checkbox" id="t111"><label for="t111">Include GitHub Actions workflow</label></li>
+          <li class="task"><input type="checkbox" id="t112"><label for="t112">Include README template</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>20. Add scaffold script</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t113"><label for="t113">Create <code>create-service.sh</code></label></li>
+          <li class="task"><input type="checkbox" id="t114"><label for="t114">Script accepts service name</label></li>
+          <li class="task"><input type="checkbox" id="t115"><label for="t115">Script creates folder structure</label></li>
+          <li class="task"><input type="checkbox" id="t116"><label for="t116">Script replaces placeholder app name</label></li>
+          <li class="task"><input type="checkbox" id="t117"><label for="t117">Test creating a new service from the template</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="phase">
+      <h2 class="phase-title">Phase 10: Final Polish</h2>
+      <div class="section">
+        <h3>21. Create final demo flow</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t118"><label for="t118">Start from a clean repo</label></li>
+          <li class="task"><input type="checkbox" id="t119"><label for="t119">Make app change</label></li>
+          <li class="task"><input type="checkbox" id="t120"><label for="t120">Push change</label></li>
+          <li class="task"><input type="checkbox" id="t121"><label for="t121">CI runs</label></li>
+          <li class="task"><input type="checkbox" id="t122"><label for="t122">Image builds</label></li>
+          <li class="task"><input type="checkbox" id="t123"><label for="t123">Image is pushed</label></li>
+          <li class="task"><input type="checkbox" id="t124"><label for="t124">Platform config is updated</label></li>
+          <li class="task"><input type="checkbox" id="t125"><label for="t125">ArgoCD syncs</label></li>
+          <li class="task"><input type="checkbox" id="t126"><label for="t126">App is deployed</label></li>
+          <li class="task"><input type="checkbox" id="t127"><label for="t127">Logs and metrics are visible</label></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h3>22. Write portfolio summary</h3>
+        <ul class="task-list">
+          <li class="task"><input type="checkbox" id="t128"><label for="t128">Write short project description</label></li>
+          <li class="task"><input type="checkbox" id="t129"><label for="t129">Explain the problem the IDP-lite solves</label></li>
+          <li class="task"><input type="checkbox" id="t130"><label for="t130">Explain the golden path</label></li>
+          <li class="task"><input type="checkbox" id="t131"><label for="t131">Explain the tools used</label></li>
+          <li class="task"><input type="checkbox" id="t132"><label for="t132">Explain quality/security gates</label></li>
+          <li class="task"><input type="checkbox" id="t133"><label for="t133">Explain what you would improve next</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="definition">
+      <h2>Definition of Done</h2>
+      <p>The IDP-lite is complete when:</p>
+      <ul class="task-list">
+        <li class="task"><input type="checkbox" id="t134"><label for="t134">A simple app can run locally</label></li>
+        <li class="task"><input type="checkbox" id="t135"><label for="t135">The app can run in Docker</label></li>
+        <li class="task"><input type="checkbox" id="t136"><label for="t136">The app can run in Kubernetes</label></li>
+        <li class="task"><input type="checkbox" id="t137"><label for="t137">CI runs tests and builds the image</label></li>
+        <li class="task"><input type="checkbox" id="t138"><label for="t138">Image is pushed to a container registry</label></li>
+        <li class="task"><input type="checkbox" id="t139"><label for="t139">ArgoCD deploys the app through GitOps</label></li>
+        <li class="task"><input type="checkbox" id="t140"><label for="t140">Basic logs and metrics are available</label></li>
+        <li class="task"><input type="checkbox" id="t141"><label for="t141">Quality and security checks exist in CI</label></li>
+        <li class="task"><input type="checkbox" id="t142"><label for="t142">Golden-path documentation exists</label></li>
+        <li class="task"><input type="checkbox" id="t143"><label for="t143">A simple service template or scaffold script exists</label></li>
+        <li class="task"><input type="checkbox" id="t144"><label for="t144">You can demo the full path end-to-end</label></li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const boxes = [...document.querySelectorAll('input[type="checkbox"]')];
+
+    function updateProgress() {
+      const checked = boxes.filter(box => box.checked).length;
+      document.getElementById('progress').textContent =
+        `${checked} of ${boxes.length} checklist items completed`;
+    }
+
+    boxes.forEach(box => {
+      const saved = localStorage.getItem(`idp-lite-${box.id}`);
+      if (saved === 'true') box.checked = true;
+
+      box.addEventListener('change', () => {
+        localStorage.setItem(`idp-lite-${box.id}`, box.checked);
+        updateProgress();
+      });
+    });
+
+    function resetChecklist() {
+      boxes.forEach(box => {
+        box.checked = false;
+        localStorage.removeItem(`idp-lite-${box.id}`);
+      });
+      updateProgress();
+    }
+
+    updateProgress();
+  </script>
+</body>
+</html>
