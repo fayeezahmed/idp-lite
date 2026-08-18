@@ -11,11 +11,11 @@ This is intentionally small. Its job is to act as the workload that later IDP ph
 
 ## Endpoints
 
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| GET | `/health` | Liveness-style health check |
-| GET | `/ready` | Readiness-style check |
-| GET | `/api/hello` | Example application endpoint |
+| Method | Endpoint     | Purpose                      |
+| ------ | ------------ | ---------------------------- |
+| GET    | `/health`    | Liveness-style health check  |
+| GET    | `/ready`     | Readiness-style check        |
+| GET    | `/api/hello` | Example application endpoint |
 
 ## Install
 
@@ -52,15 +52,15 @@ curl http://localhost:3000/api/hello
 Expected responses:
 
 ```json
-{"status":"ok","service":"idp-lite-demo-app"}
+{ "status": "ok", "service": "idp-lite-demo-app" }
 ```
 
 ```json
-{"status":"ready","service":"idp-lite-demo-app"}
+{ "status": "ready", "service": "idp-lite-demo-app" }
 ```
 
 ```json
-{"message":"Hello from IDP Lite demo app"}
+{ "message": "Hello from IDP Lite demo app" }
 ```
 
 ## Run tests
@@ -84,12 +84,35 @@ idp-lite-demo-app/
     └── app.test.js
 ```
 
-## Next IDP-lite phase
+## Execute with Minikube
 
-After this app runs locally and tests pass, the next phase is containerisation:
+Pre-requisite:
 
-- Add a Dockerfile
-- Add a `.dockerignore`
-- Build the image locally
-- Run the app through Docker
-- Test `/health` through Docker
+- VirtualBox
+- Minikube
+- kubectl
+
+### Steps
+
+#### Deploy application
+
+1. Get minikube started with virtualbox:
+   `minikube start --driver=virtualbox`
+2. Deploy application:
+
+```
+kubectl apply -f ./k8s/idp-lite-replicaset.yaml
+kubectl apply -f ./k8s/idp-lite-svc.yaml
+```
+
+#### Execute
+
+1. Get URL:
+   `minikube service idp-lite-service --url`
+2. Test with curl:
+
+```
+curl http://192.168.59.102:30080/health
+curl http://192.168.59.102:30080/ready
+curl http://192.168.59.102:30080/api/hello
+```
