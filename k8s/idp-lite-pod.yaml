@@ -1,0 +1,13 @@
+# https://kubernetes.io/docs/concepts/workloads/pods/
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "idp-lite"
+  labels:
+    app: "idp-lite"
+spec:
+  containers:
+    - name: idp-lite
+      image: "idp-lite:latest"
+      imagePullPolicy: Never
+---
