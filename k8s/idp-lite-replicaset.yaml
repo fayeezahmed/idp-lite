@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: idp-lite-replicaset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: idp-lite
+  template:
+    metadata:
+      name: idp-lite
+      labels:
+        app: idp-lite
+    spec:
+      containers:
+        - name: idp-lite
+          image: "idp-lite:latest"
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
