@@ -38,10 +38,10 @@ jobs:
         with:
           node-version: 24
 
-      - name: Build
+      - name: Install & Test
         run: |
           npm install
-          npx webpack
+          npm test
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
